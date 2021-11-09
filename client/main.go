@@ -58,5 +58,14 @@ func startClient(address string) {
 
 	defer conn.Close()
 
-	client := csmutex.NewCSMutexClient
+	client := csmutex.NewCSMutexClient(conn)
+
+	go mainLoop(client)
+
+	fmt.Scanln()
+
+}
+
+func mainLoop(client csmutex.CSMutexClient) {
+
 }
