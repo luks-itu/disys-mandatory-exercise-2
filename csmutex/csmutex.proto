@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option go_package = "github.com/luks-itu/disys-mandatory-exercise-2/csmutex";
+
+
+service CSMutex {
+	rpc RequestAccess (Identifier) returns (Empty);
+	rpc ReleaseAccess (Empty) returns (Empty);
+	rpc PerformCriticalAction (ActionDetails) returns (Empty);
+}
+
+message Empty {}
+
+message Identifier {
+    int32 id = 1;
+}
+
+message ActionDetails {
+	string msg = 1;
+}
