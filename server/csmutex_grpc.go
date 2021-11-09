@@ -21,7 +21,9 @@ func newCSMutexServer() *CSMutexServer {
 }
 
 func (s *CSMutexServer) RequestAccess(ctx context.Context, identifier *csmutex.Identifier) (*csmutex.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RequestAccess not implemented")
+	//time.Sleep(3 * time.Second)
+	logI(fmt.Sprintf("Node %d requesting token", identifier.Id))
+	return &csmutex.Empty{}, nil
 }
 
 func (s *CSMutexServer) ReleaseAccess(ctx context.Context, empty *csmutex.Empty) (*csmutex.Empty, error) {

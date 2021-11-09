@@ -2,8 +2,10 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/luks-itu/disys-mandatory-exercise-2/csmutex"
 	"google.golang.org/grpc"
@@ -67,5 +69,14 @@ func startClient(address string) {
 }
 
 func mainLoop(client csmutex.CSMutexClient) {
+	for {
+		_, err := client.RequestAccess(context.Background(), &csmutex.Identifier{
+			Id: int32(os.Getpid()),
+		})
+		if err != nil {
+			logE(err)
+		}
+		logI("token received, accessing critical section")
 
+	}
 }
