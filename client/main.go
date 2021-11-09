@@ -4,6 +4,9 @@ import (
 	"bytes"
 	"fmt"
 	"log"
+
+	"github.com/luks-itu/disys-mandatory-exercise-2/csmutex"
+	"google.golang.org/grpc"
 )
 
 var (
@@ -38,11 +41,22 @@ func main() {
 		panic(str)
 	}
 
-	fmt.Print("Enter hostAddress: ")
+	fmt.Println("Enter server address: ")
 	fmt.Scanln(&hostAddress)
 
-	go startServer(hostAddress)
+	startClient(hostAddress)
 
-	fmt.Scanln()
+}
 
+func startClient(address string) {
+	var opts []grpc.DialOption
+	opts = append(opts, grpc.WithInsecure())
+	conn, err := grpc.Dial(address, opts...)
+	if err != nil {
+		logF(err.Error())
+	}
+
+	defer conn.Close()
+
+	client := csmutex.NewCSMutexClient
 }
