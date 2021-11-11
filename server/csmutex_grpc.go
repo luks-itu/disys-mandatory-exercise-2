@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	csDelay = 10 * time.Millisecond
+	csDelay = 1000 * time.Millisecond
 )
 
 type CSMutexServer struct {
@@ -32,7 +32,6 @@ func (s *CSMutexServer) RequestAccess(ctx context.Context, identifier *csmutex.I
 	logI(fmt.Sprintf("Node %d requesting token", identifier.Id))
 	s.mu.Lock()
 	s.currentNode = identifier.Id
-	logI(fmt.Sprintf("Node %d granted token", identifier.Id))
 	return &csmutex.Empty{}, nil
 }
 
@@ -43,9 +42,8 @@ func (s *CSMutexServer) ReleaseAccess(ctx context.Context, identifier *csmutex.I
 		return nil, err
 
 	}
-	logI(fmt.Sprintf("Node %d releasing token", identifier.Id))
-	s.currentNode = -1
 	s.mu.Unlock()
+	s.currentNode = -1
 	return &csmutex.Empty{}, nil
 }
 

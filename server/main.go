@@ -44,5 +44,4 @@ func main() {
 	go startServer(hostAddress)
 
 	fmt.Scanln()
-
 }

@@ -22,6 +22,8 @@ var (
 
 	// Logs str as a fatal error, then panics
 	logF func(str string)
+
+	accessCount int = 0
 )
 
 func main() {
@@ -70,6 +72,7 @@ func startClient(address string) {
 
 func mainLoop(client csmutex.CSMutexClient) {
 	for {
+		logI("requesting token")
 		_, err := client.RequestAccess(context.Background(), &csmutex.Identifier{
 			Id: int32(os.Getpid()),
 		})
@@ -84,13 +87,14 @@ func mainLoop(client csmutex.CSMutexClient) {
 		if err != nil {
 			logE(err)
 		}
-
+		accessCount++
+		logI(fmt.Sprintf("critical section accessed %d times", accessCount))
+		logI("critical section complete, releasing token")
 		_, err = client.ReleaseAccess(context.Background(), &csmutex.Identifier{
 			Id: int32(os.Getpid()),
 		})
 		if err != nil {
 			logE(err)
 		}
-
 	}
 }
