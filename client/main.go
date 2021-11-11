@@ -43,7 +43,7 @@ func main() {
 		panic(str)
 	}
 
-	fmt.Println("Enter server address: ")
+	fmt.Print("Enter server address: ")
 	fmt.Scanln(&hostAddress)
 
 	startClient(hostAddress)
@@ -77,6 +77,20 @@ func mainLoop(client csmutex.CSMutexClient) {
 			logE(err)
 		}
 		logI("token received, accessing critical section")
+
+		_, err = client.PerformCriticalAction(context.Background(), &csmutex.ActionDetails{
+			Id: &csmutex.Identifier{Id: int32(os.Getpid())},
+		})
+		if err != nil {
+			logE(err)
+		}
+
+		_, err = client.ReleaseAccess(context.Background(), &csmutex.Identifier{
+			Id: int32(os.Getpid()),
+		})
+		if err != nil {
+			logE(err)
+		}
 
 	}
 }

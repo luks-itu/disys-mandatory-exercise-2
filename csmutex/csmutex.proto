@@ -5,7 +5,7 @@ option go_package = "github.com/luks-itu/disys-mandatory-exercise-2/csmutex";
 
 service CSMutex {
 	rpc RequestAccess (Identifier) returns (Empty);
-	rpc ReleaseAccess (Empty) returns (Empty);
+	rpc ReleaseAccess (Identifier) returns (Empty);
 	rpc PerformCriticalAction (ActionDetails) returns (Empty);
 }
 
@@ -17,4 +17,5 @@ message Identifier {
 
 message ActionDetails {
 	string msg = 1;
+	Identifier id = 2;
 }

@@ -19,7 +19,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CSMutexClient interface {
 	RequestAccess(ctx context.Context, in *Identifier, opts ...grpc.CallOption) (*Empty, error)
-	ReleaseAccess(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
+	ReleaseAccess(ctx context.Context, in *Identifier, opts ...grpc.CallOption) (*Empty, error)
 	PerformCriticalAction(ctx context.Context, in *ActionDetails, opts ...grpc.CallOption) (*Empty, error)
 }
 
@@ -40,7 +40,7 @@ func (c *cSMutexClient) RequestAccess(ctx context.Context, in *Identifier, opts 
 	return out, nil
 }
 
-func (c *cSMutexClient) ReleaseAccess(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error) {
+func (c *cSMutexClient) ReleaseAccess(ctx context.Context, in *Identifier, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, "/CSMutex/ReleaseAccess", in, out, opts...)
 	if err != nil {
@@ -63,7 +63,7 @@ func (c *cSMutexClient) PerformCriticalAction(ctx context.Context, in *ActionDet
 // for forward compatibility
 type CSMutexServer interface {
 	RequestAccess(context.Context, *Identifier) (*Empty, error)
-	ReleaseAccess(context.Context, *Empty) (*Empty, error)
+	ReleaseAccess(context.Context, *Identifier) (*Empty, error)
 	PerformCriticalAction(context.Context, *ActionDetails) (*Empty, error)
 	mustEmbedUnimplementedCSMutexServer()
 }
@@ -75,7 +75,7 @@ type UnimplementedCSMutexServer struct {
 func (UnimplementedCSMutexServer) RequestAccess(context.Context, *Identifier) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RequestAccess not implemented")
 }
-func (UnimplementedCSMutexServer) ReleaseAccess(context.Context, *Empty) (*Empty, error) {
+func (UnimplementedCSMutexServer) ReleaseAccess(context.Context, *Identifier) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReleaseAccess not implemented")
 }
 func (UnimplementedCSMutexServer) PerformCriticalAction(context.Context, *ActionDetails) (*Empty, error) {
@@ -113,7 +113,7 @@ func _CSMutex_RequestAccess_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _CSMutex_ReleaseAccess_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+	in := new(Identifier)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -125,7 +125,7 @@ func _CSMutex_ReleaseAccess_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: "/CSMutex/ReleaseAccess",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CSMutexServer).ReleaseAccess(ctx, req.(*Empty))
+		return srv.(CSMutexServer).ReleaseAccess(ctx, req.(*Identifier))
 	}
 	return interceptor(ctx, in, info, handler)
 }
