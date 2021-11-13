@@ -2,7 +2,7 @@
 Distributed Mutual Exclusion
 
 ## Starting the program
-First, start the server. Then start any number of clients you want.
+Note: First, start the server. Then start any number of clients you want.
 They should be run from different terminal instances.
 
 ### Server
