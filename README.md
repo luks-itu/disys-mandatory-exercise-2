@@ -2,8 +2,8 @@
 Distributed Mutual Exclusion
 
 ## Starting the program
-Note: First, start the server. Then start any number of clients you want.
-They should be run from different terminal instances.
+*Note: First, start the server. Then start any number of clients you want.
+They should be run from different terminal instances.*
 
 ### Server
 Run `go run .` in the `/server` folder.
