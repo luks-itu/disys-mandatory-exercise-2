@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"log"
+	"os"
 )
 
 var (
@@ -24,7 +25,10 @@ func main() {
 	var loggerInf = log.New(&buf, "LOG|INFO: ", log.Lshortfile|log.Lmicroseconds)
 	var loggerErr = log.New(&buf, "LOG|ERR: ", log.Lshortfile|log.Lmicroseconds)
 	var loggerFat = log.New(&buf, "LOG|FATAL: ", log.Lshortfile|log.Lmicroseconds)
-	defer fmt.Println(&buf)
+	defer func() {
+		fmt.Println(&buf)
+		os.WriteFile("log.txt", buf.Bytes(), 0644)
+	}()
 	logI = func(str string) {
 		loggerInf.Output(2, str)
 		fmt.Println(str)
